@@ -1,4 +1,4 @@
-import RestaurantPageLayout from "../layouts/restaurantPageLayout/restaurantPageLayout";
+import RestaurantPageLayout from "../layouts/restaurantPageLayout/RestaurantPageLayout";
 const RestaurantPage = () => {
   return (
     <>
