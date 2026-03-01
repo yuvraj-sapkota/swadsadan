@@ -3,6 +3,10 @@ import OfferSlider from "./restaurantPageLayoutPart/OfferSlider";
 import { useEffect, useState } from "react";
 import MenuList from "./restaurantPageLayoutPart/MenuList";
 import BottomCartBar from "./restaurantPageLayoutPart/BottomCartBar";
+import RestaurantHeader from "./restaurantPageLayoutPart/RestaurantHeader";
+import OrderTypeToggle from "./restaurantPageLayoutPart/OrderTypeToggle";
+import SearchBar from "./restaurantPageLayoutPart/SearchBar";
+import CategoryTabs from "./restaurantPageLayoutPart/CategoryTabs";
 
 const categories = [
   {
@@ -219,72 +223,27 @@ const restaurantPageLayout = () => {
     );
   };
 
+  const cartSummary = cart.reduce(
+    (acc, item) => {
+      acc.totalQty += item.qty;
+      acc.totalPrice += item.qty * item.price;
+      return acc;
+    },
+    { totalQty: 0, totalPrice: 0 },
+  );
+
   return (
     <>
       <div className="max-w-7xl mx-auto px-4 ">
         <div className="shadow-sm rounded-b-2xl p-2 space-y-4 ">
           <div className="space-y-6 flex flex-col md:flex-row md:items-start md:justify-between">
             {/* restaurant infor  */}
-            <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <div className="h-20 w-20 rounded-md ">
-                  <img
-                    className="h-full w-full object-cover"
-                    src="https://merokinmel.com/storage/category/icon/60f1526ed2563.png"
-                    alt=""
-                  />
-                </div>
-                <div>
-                  <h2 className="font-semibold text-2xl">Restaurant Name</h2>
-                  <p className="flex items-center gap-2 text-sm">
-                    <MapPin size={18} /> Bhairahawa-13, Siddharthanagar, Lumbini
-                  </p>
-                </div>
-              </div>
-              <div className="flex  justify-between  sm:gap-10 sm:justify-start">
-                <div className="flex flex-col justify-center items-center gap-1">
-                  <p className="flex items-center gap-1 justify-center w-fit p-1 font-semibold rounded-md bg-green-500 text-white text-xs ">
-                    4.7 <Star size={14} />
-                  </p>
-                  <p className="text-xs text-gray-500">417 ratings</p>
-                </div>
-                <div className="border border-gray-200"></div>
-                <div className="flex items-center flex-col gap-1  ">
-                  <p className="font-semibold text-xs">Timing</p>
-                  <p className="text-xs text-gray-500">9:00AM - 10:00 PM</p>
-                </div>
-                <div className="border border-gray-200"></div>
-                <div className="flex items-center flex-col gap-1  ">
-                  <p className="font-semibold text-xs">Mini Order</p>
-                  <p className="text-xs text-gray-500">NRS 100</p>
-                </div>
-              </div>
-            </div>
+            <RestaurantHeader />
             {/* order type  */}
-            <div
-              className={`border border-gray-200 p-1 rounded-md flex gap-2  w-fit`}
-            >
-              <button
-                onClick={() => setOrderType("table")}
-                className={` px-6 py-2 rounded-md text-xs ${
-                  orderType === "table"
-                    ? "bg-green-500 text-white"
-                    : "bg-gray-100"
-                }`}
-              >
-                Table
-              </button>
-              <button
-                onClick={() => setOrderType("packed")}
-                className={` px-6 py-2 rounded-md text-xs ${
-                  orderType === "packed"
-                    ? "bg-green-500 text-white"
-                    : "bg-gray-100"
-                }`}
-              >
-                Packed
-              </button>
-            </div>
+            <OrderTypeToggle
+              orderType={orderType}
+              setOrderType={setOrderType}
+            />
           </div>
           {/* offer slider  */}
           <OfferSlider />
@@ -293,39 +252,13 @@ const restaurantPageLayout = () => {
 
       <div className=" sticky top-0 mt-6 py-2 bg-white ">
         {/* search bar  */}
-        <div className="   max-w-7xl mx-auto  px-4 bg-white">
-          <div className="flex relative">
-            <Search className="absolute left-2 text-gray-400 top-1/2 transform -translate-y-1/2" />
-            <input
-              type="text"
-              placeholder="Search for dished...."
-              className="border border-gray-200 rounded-md px-10 py-3 focus:outline-orange-500 outline-none w-full"
-            />
-          </div>
-        </div>
-
+        <SearchBar />
         {/* category div  */}
-        <div className=" mt-3 bg-orange-100 py-2 px-4 overflow-x-auto scrollbar-hide ">
-          <div className="max-w-7xl mx-auto ">
-            <ul className="flex  gap-6 ">
-              {categories.map((cat) => (
-                <li
-                  onClick={() => setActiveCategory(cat._id)}
-                  className={` px-2 rounded-md text-lg  ${
-                    activeCategory === cat._id
-                      ? "text-white  bg-orange-500"
-                      : "text-gray-500"
-                  }`}
-                >
-                  {cat.name}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        <CategoryTabs categories={categories} activeCategory={activeCategory} />
       </div>
 
       {/* mneu list  */}
+
       <MenuList
         menuItems={menuItems}
         cart={cart}
@@ -333,7 +266,12 @@ const restaurantPageLayout = () => {
         decreaseQty={decreaseQty}
       />
 
-      {cart.length > 0 && <BottomCartBar />}
+      {cart.length > 0 && (
+        <BottomCartBar
+          totalQty={cartSummary.totalQty}
+          totalPrice={cartSummary.totalPrice}
+        />
+      )}
     </>
   );
 };
