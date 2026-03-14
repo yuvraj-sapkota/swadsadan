@@ -1,10 +1,10 @@
-import Sidebar from "../layouts/dashboardLayout/sidebar/Sidebar";
-
+import Sidebar from "../features/dashboard/sidebar/Sidebar";
+import DashboardLayout from "../layouts/dashboardLayout/DashboardLayout";
 
 const Dashboard = () => {
   return (
     <>
-      <Sidebar />
+      <DashboardLayout />
     </>
   );
 };

@@ -40,11 +40,11 @@ const filteredMenus = [
   },
 ];
 
-const MenuGrid = () => {
+const MenuGrid = ({ menus }) => {
   return (
     <>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {filteredMenus.map((item) => (
+        {menus.map((item) => (
           <div
             key={item._id}
             className="bg-white border border-gray-200 rounded-md overflow-hidden shadow-sm hover:shadow-md transition"
@@ -65,9 +65,9 @@ const MenuGrid = () => {
                   </h2>
                   <p className="text-sm text-gray-500">{item.description}</p>
                   <p className="text-xs text-gray-500 mt-1">
-                    Category:{" "}
+                    Category:
                     <span className="font-medium text-gray-800">
-                      {item.category?.name}
+                      {item.category}
                     </span>
                   </p>
                 </div>
@@ -84,7 +84,7 @@ const MenuGrid = () => {
               </div>
 
               {/* Price / Variants */}
-              {item.variants.length > 0 ? (
+              {item.variants?.length > 0 ? (
                 <div className="border border-gray-200 bg-gray-50 rounded-md p-3 space-y-2">
                   <p className="text-sm font-semibold text-gray-800">
                     Variants
@@ -101,7 +101,7 @@ const MenuGrid = () => {
                 </div>
               ) : (
                 <p className="text-xl font-bold text-gray-900">
-                  Rs. {item.price}
+                  Rs. {item.basePrice}
                 </p>
               )}
 

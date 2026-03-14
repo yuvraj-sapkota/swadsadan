@@ -7,7 +7,9 @@ const categorySchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+
     description: String,
+
     status: {
       type: String,
       enum: ["active", "hidden"],
@@ -24,7 +26,7 @@ const categorySchema = new mongoose.Schema(
       type: String,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("Category", categorySchema);

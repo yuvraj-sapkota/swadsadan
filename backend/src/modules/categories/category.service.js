@@ -6,7 +6,7 @@ export const createCategory = async (data, file) => {
     ...data,
     image: file?.path,
     imagePublicId: file?.filename,
-  });
+  });  
 
   return category;
 };

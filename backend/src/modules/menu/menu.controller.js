@@ -10,7 +10,7 @@ export const createMenuController = async (req, res) => {
     return res.status(400).json({ success: false, message: err.message });
   }
 };
-
+ 
 export const getMenusController = async (req, res) => {
   try {
     const { page = 1, limit = 20, category, search } = req.query;

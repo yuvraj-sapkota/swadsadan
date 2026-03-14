@@ -12,8 +12,8 @@ import upload from "../../middlewares/upload.middleware.js";
 
 const router = express.Router();
 
-router.post("/", upload.single("image"), createMenuController);
-router.get("/", getMenusController);
+router.post("/", upload.single("image"), createMenuController);  // http://localhost:8000/api/menus/
+router.get("/", getMenusController);                        // http://localhost:8000/api/menus
 router.get("/:id", getMenuByIdController);
 router.put("/:id", upload.single("image"), updateMenuController); 
 router.delete("/:id", deleteMenuController);

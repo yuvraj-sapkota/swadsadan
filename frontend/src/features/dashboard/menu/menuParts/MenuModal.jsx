@@ -6,7 +6,7 @@ import MenuBasicInfo from "./MenuBasicInfo";
 import VariantGroup from "./VariantGroup";
 import ImageUploader from "./ImageUploader";
 
-const MenuModal = ({ setShowMenuModal }) => {
+const MenuModal = ({ setShowMenuModal, categories }) => {
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const imageRef = useRef();
@@ -248,6 +248,7 @@ const MenuModal = ({ setShowMenuModal }) => {
               <MenuBasicInfo
                 menuItems={menuItems}
                 handleChange={handleChange}
+                categories={categories}
               />
 
               {/* vairant feature/button  */}

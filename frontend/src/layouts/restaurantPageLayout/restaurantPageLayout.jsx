@@ -1,12 +1,12 @@
 import { MapPin, Plus, Search, Star } from "lucide-react";
-import OfferSlider from "./restaurantPageLayoutPart/OfferSlider";
+import OfferSlider from "../../features/restaurant/OfferSlider";
 import { useEffect, useState } from "react";
-import MenuList from "./restaurantPageLayoutPart/MenuList";
-import BottomCartBar from "./restaurantPageLayoutPart/BottomCartBar";
-import RestaurantHeader from "./restaurantPageLayoutPart/RestaurantHeader";
-import OrderTypeToggle from "./restaurantPageLayoutPart/OrderTypeToggle";
-import SearchBar from "./restaurantPageLayoutPart/SearchBar";
-import CategoryTabs from "./restaurantPageLayoutPart/CategoryTabs";
+import MenuList from "../../features/restaurant/MenuList";
+import BottomCartBar from "../../features/restaurant/BottomCartBar";
+import RestaurantHeader from "../../features/restaurant/RestaurantHeader";
+import OrderTypeToggle from "../../features/restaurant/OrderTypeToggle";
+import SearchBar from "../../features/restaurant/SearchBar";
+import CategoryTabs from "../../features/restaurant/CategoryTabs";
 
 const categories = [
   {
