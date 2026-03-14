@@ -7,6 +7,11 @@ const authSchema = new mongoose.Schema(
     address: { type: String, required: true },
     gender: { type: String, enum: ["male", "female", "other"], required: true },
     phone: { type: String, required: true },
+    role: {
+      type: String,
+      enum: ["user", "admin","resturentOwner"],
+      default: "user",
+    },
     email: {
       type: String,
       required: true,
@@ -14,7 +19,7 @@ const authSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
-    password: {
+    password: { 
       type: String,
       required: true,
       minlength: 6,
