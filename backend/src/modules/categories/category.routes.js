@@ -5,7 +5,7 @@ import upload from "../../middlewares/upload.middleware.js";
 const router = express.Router();
 
 router.post("/", upload.single("image"), controller.create);
-router.get("/", controller.getAll);
+router.get("/", controller.getAll); //http://localhost:6000/api/categories?page=1&limit=5&search=talu
 router.get("/:id", controller.getOne);
 router.put("/:id", upload.single("image"), controller.update);
 router.delete("/:id", controller.remove);

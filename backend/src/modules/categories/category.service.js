@@ -11,8 +11,30 @@ export const createCategory = async (data, file) => {
   return category;
 };
 
-export const getAllCategories = async () => {
-  return await Category.find().sort({ priority: 1 });
+export const getAllCategories = async ({ page = 1, limit = 20, search }) => {
+  const q = {};
+
+  if (search) {
+    q.name = { $regex: search, $options: "i" };
+  }
+
+  const skip = (page - 1) * limit;
+
+  const [items, total] = await Promise.all([
+    Category.find(q)
+      .sort({ priority: 1 })
+      .skip(skip)
+      .limit(Number(limit)),
+
+    Category.countDocuments(q),
+  ]);
+
+  return {
+    items,
+    total,
+    page: Number(page),
+    limit: Number(limit),
+  };
 };
 
 export const getCategoryById = async (id) => {
