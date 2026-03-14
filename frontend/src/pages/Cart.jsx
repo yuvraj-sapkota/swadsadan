@@ -84,7 +84,7 @@ const Cart = () => {
                   </div>
                   <div>
                     <button className="bg-green-500 text-white py-4 px-4 rounded-md font-bold flex items-center gap-1 justify-center text-sm">
-                      Proceed to cheeckout <ChevronRight size={18} />{" "}
+                     Cheeckout <ChevronRight size={18} />{" "}
                     </button>
                   </div>
                 </div>

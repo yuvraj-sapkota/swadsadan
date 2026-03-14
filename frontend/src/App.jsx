@@ -1,8 +1,9 @@
-import Admin from "./layouts/dashboardLayout/admin/Admin";
-import Menu from "./layouts/dashboardLayout/menu/Menu";
-import QrDownload from "./layouts/dashboardLayout/qrDownload/QrDownload";
-import Reservation from "./layouts/dashboardLayout/Reservation/Reservation";
-import Settings from "./layouts/dashboardLayout/settings/Settings";
+
+import Admin from "./features/dashboard/admin/Admin";
+import Menu from "./features/dashboard/menu/Menu";
+import Reservation from "./features/dashboard/reservation/Reservation";
+import QrDownload from "./features/dashboard/qrDownload/QrDownload";
+import Settings from "./features/dashboard/settings/Settings";
 import Dashboard from "./pages/Dashboard";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";

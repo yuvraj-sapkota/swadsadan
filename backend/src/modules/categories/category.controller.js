@@ -6,8 +6,8 @@ export const create = async (req, res, next) => {
       req.body,
       req.file
     );
-
-    res.status(201).json({
+ 
+    res.status(201).json({ 
       success: true,
       message: "Category created successfully",
       data: category,

@@ -1,6 +1,4 @@
-import React from "react";
-
-const MenuBasicInfo = ({ menuItems, handleChange }) => {
+const MenuBasicInfo = ({ menuItems, handleChange, categories }) => {
   return (
     <>
       {/* item name  */}
@@ -37,9 +35,11 @@ const MenuBasicInfo = ({ menuItems, handleChange }) => {
           className="border border-gray-400 py-2 rounded-md px-4 w-full text-gray-400"
         >
           <option value="">Select Category</option>
-          <option value="pizza">pizza</option>
-          <option value="burger">Burger</option>
-          <option value="chowmin">Chowmin</option>
+          {categories.map((cat) => (
+            <option key={cat._id} value={cat._id}>
+              {cat.name}
+            </option>
+          ))}
         </select>
       </div>
       {/* status  */}

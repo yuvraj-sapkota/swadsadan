@@ -2,14 +2,14 @@ import mongoose from "mongoose";
 
 const OptionSchema = new mongoose.Schema({
   name: { type: String, required: true, trim: true },
-  price: { type: Number, required: true, min: 0 }, 
+  price: { type: Number, required: true, min: 0 },
 });
 
 const VariantGroupSchema = new mongoose.Schema({
   groupName: { type: String, required: true, trim: true },
   required: { type: Boolean, default: false },
   multiSelect: { type: Boolean, default: false },
-  options: { type: [OptionSchema], default: [] }, 
+  options: { type: [OptionSchema], default: [] },
 });
 
 const MenuSchema = new mongoose.Schema(
@@ -18,12 +18,16 @@ const MenuSchema = new mongoose.Schema(
     description: { type: String, default: "" },
     category: { type: String, required: true, trim: true },
     basePrice: { type: Number, required: true, min: 0 },
-    status: { type: String, enum: ["available", "outofstock"], default: "available" },
-    imageUrl: { type: String, default: "" }, 
+    status: {
+      type: String,
+      enum: ["available", "outofstock"],
+      default: "available",
+    },
+    imageUrl: { type: String, default: "" },
     imagePublicId: { type: String, default: "" },
-    variantGroups: { type: [VariantGroupSchema], default: [] }, 
+    variantGroups: { type: [VariantGroupSchema], default: [] },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 export default mongoose.model("Menu", MenuSchema);
