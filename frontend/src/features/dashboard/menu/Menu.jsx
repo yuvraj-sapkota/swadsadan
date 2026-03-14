@@ -80,7 +80,8 @@ const Menu = () => {
   const fetchCategories = async () => {
     try {
       const res = await getCategories();
-      setCategories(res.data.data);
+      console.log(res);
+      setCategories(res.data.items);
     } catch (error) {
       console.log("Category fetch error", error);
     }
