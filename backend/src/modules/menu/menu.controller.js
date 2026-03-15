@@ -1,9 +1,18 @@
 // controllers/menu.controller.js
 import * as menuService from "./menu.service.js";
+import Resturent from "../restaurant/restaurant.model.js";
 
 export const createMenu = async (req, res) => {
   try {
-    const created = await menuService.createMenu({ id: req.user._id, body: req.body, file: req.file });
+
+    const restaurant = await Resturent.findOne({
+  owner: req.user._id
+});
+if(!restaurant) return res.status(404).json({ success: false, message: " resturent Not found" });
+const ownerid = restaurant._id;
+console.log("resid",ownerid);
+
+    const created = await menuService.createMenu({ id: ownerid, body: req.body, file: req.file });
     return res.status(201).json({ success: true, message: "Menu created successfully",  data: created });
   } catch (err) {
     console.error(err);
@@ -14,8 +23,6 @@ export const createMenu = async (req, res) => {
 export const getMenus = async (req, res, next) => {
   try {
     const { page = 1, limit = 20, category, search } = req.query;
-
-
 
     const result = await menuService.getMenus({ page, limit, category, search });
     return res.json({ success: true,message: "Menu get successfully",  ...result });

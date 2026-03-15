@@ -1,9 +1,18 @@
 import * as categoryService from "./category.service.js";
+import Resturent from "../restaurant/restaurant.model.js";
 
 export const create = async (req, res, next) => { 
   try {
+
+        const restaurant = await Resturent.findOne({
+      owner: req.user._id
+    });
+    if(!restaurant) return res.status(404).json({ success: false, message: " resturent Not found" });
+    const ownerid = restaurant._id;
+    console.log("resid",ownerid);
+
     const category = await categoryService.createCategory(
-      req.user._id,
+      ownerid,
       req.body,
       req.file
     );
