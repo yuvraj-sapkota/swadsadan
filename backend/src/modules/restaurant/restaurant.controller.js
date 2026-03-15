@@ -9,7 +9,6 @@ import {
 
 export const create = async (req, res, next) => {
   try {
-
     const restaurant = await createRestaurant(req.user._id, req.body);
 
     res.status(201).json({

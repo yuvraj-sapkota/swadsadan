@@ -2,6 +2,7 @@ import Restaurant from "./restaurant.model.js";
 import User from "../auth/auth.model.js";
 
 export const createRestaurant = async (userId, data) => {
+  
 
   const existing = await Restaurant.findOne({ owner: userId });
 

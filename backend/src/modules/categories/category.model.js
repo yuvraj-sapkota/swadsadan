@@ -2,6 +2,13 @@ import mongoose from "mongoose";
 
 const categorySchema = new mongoose.Schema(
   {
+    hotel: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Restaurant",
+      required: true,
+      unique: true  
+      },
+
     name: {
       type: String,
       required: true,

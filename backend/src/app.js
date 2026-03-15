@@ -6,6 +6,7 @@ import authRoutes from "./modules/auth/auth.routes.js";
 import restaurantRoutes from "./modules/restaurant/restaurant.routes.js";
 
 
+
 const app = express();
 app.use(cors());
 app.use(express.json());

@@ -1,8 +1,9 @@
 import Category from "./category.model.js";
 import cloudinary from "../../config/cloudinary.js";
 
-export const createCategory = async (data, file) => {
+export const createCategory = async ( userId, data, file) => {
   const category = await Category.create({
+    hotel: userId,
     ...data,
     image: file?.path,
     imagePublicId: file?.filename,
