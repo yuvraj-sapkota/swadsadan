@@ -14,6 +14,13 @@ const VariantGroupSchema = new mongoose.Schema({
 
 const MenuSchema = new mongoose.Schema(
   {
+      hotel: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Restaurant",
+          required: true,
+          unique: true  
+          },
+          
     name: { type: String, required: true, trim: true },
     description: { type: String, default: "" },
     category: { type: String, required: true, trim: true },

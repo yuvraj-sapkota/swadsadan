@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import db from "./config/db.js";
 dotenv.config();
 
-const PORT = process.env.PORT || 6000;
+const PORT = process.env.PORT || 8000;
 
 
 app.listen(PORT, () => {
