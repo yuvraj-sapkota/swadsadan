@@ -14,8 +14,8 @@ import upload from "../../middlewares/upload.middleware.js";
 
 const router = express.Router();
 
-router.post("/", upload.single("image"), protect, createMenu);
-router.get("/", protect , getMenus); //http://localhost:6000/api/menus?page=1&limit=10&category=piza&search=fizaaaa
+router.post("/", upload.single("image"), createMenu);
+router.get("/" , getMenus); //http://localhost:6000/api/menus?page=1&limit=10&category=piza&search=fizaaaa
 router.get("/:id", getMenuById);
 router.put("/:id", upload.single("image"), updateMenu);
 router.delete("/:id", deleteMenu);
