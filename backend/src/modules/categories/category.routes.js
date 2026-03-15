@@ -5,7 +5,7 @@ import { protect } from "../../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", upload.single("image"),protect, controller.create);
+router.post("/", upload.single("image"), controller.create);
 router.get("/", controller.getAll); //http://localhost:6000/api/categories?page=1&limit=5&search=talu
 router.get("/:id", controller.getOne);
 router.put("/:id", upload.single("image"), controller.update); //http://localhost:8000/api/categories/:id
