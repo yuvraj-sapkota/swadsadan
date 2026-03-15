@@ -39,7 +39,6 @@ const CategoryGrid = ({ categories, onDelete, onEdit }) => {
                 <p className="text-sm text-gray-600">
                   Priority:
                   <span className="font-semibold text-gray-900">
-                    {" "}
                     {category.priority}
                   </span>
                 </p>
@@ -63,7 +62,7 @@ const CategoryGrid = ({ categories, onDelete, onEdit }) => {
                     <Pencil size={18} className="text-gray-600" />
                   </button>
                   <button
-                    onClick={() => onDelete(category._id)}
+                    onClick={() => onDelete(category._id, "category")}
                     className="border border-gray-200 rounded-md p-2 hover:bg-red-100"
                   >
                     <Trash2 size={18} className="text-red-600" />

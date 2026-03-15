@@ -7,8 +7,9 @@ export const addCategory = async (categoryData) => {
   return res.data;
 };
 
-export const getCategories = () => {
-  return apiClient.get("/categories");
+export const getCategories = async (params) => {
+ const res = await apiClient.get("/categories", { params });
+ return res.data
 };
 
 export const editCategories = (itemId, data) => {

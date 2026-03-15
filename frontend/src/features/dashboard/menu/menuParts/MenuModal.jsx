@@ -5,8 +5,15 @@ import imageCompression from "browser-image-compression";
 import MenuBasicInfo from "./MenuBasicInfo";
 import VariantGroup from "./VariantGroup";
 import ImageUploader from "./ImageUploader";
+import { addMenu } from "../../../../services/menu/menuApi";
 
-const MenuModal = ({ setShowMenuModal, categories }) => {
+const MenuModal = ({
+  setShowMenuModal,
+  categories,
+  fetchMenus,
+  selectedMenu,
+}) => {
+  console.log("edit garna select gareko menu", selectedMenu);
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const imageRef = useRef();
@@ -196,40 +203,46 @@ const MenuModal = ({ setShowMenuModal, categories }) => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const isValid = validateForm();
     if (!isValid) return;
 
-    const formData = new FormData();
-    formData.append("name", menuItems.name);
-    formData.append("description", menuItems.description);
-    formData.append("category", menuItems.category);
-    formData.append("basePrice", menuItems.basePrice);
-    formData.append("image", imageFile);
-    formData.append("status", menuItems.status);
-    formData.append("variantGroups", JSON.stringify(menuItems.variantGroups));
+    try {
+      const formData = new FormData();
+      formData.append("name", menuItems.name);
+      formData.append("description", menuItems.description);
+      formData.append("category", menuItems.category);
+      formData.append("basePrice", menuItems.basePrice);
+      formData.append("image", imageFile);
+      formData.append("status", menuItems.status);
+      formData.append("variantGroups", JSON.stringify(menuItems.variantGroups));
 
-    for (let pair of formData.entries()) {
-      console.log(pair[0], pair[1]);
+      const data = await addMenu(formData);
+      console.log(data);
+      if (data.success) {
+        toast.success(data.message || "Menu added successfully");
+      }
+      fetchMenus({ pages: 1 });
+      setMenuItems({
+        name: "",
+        description: "",
+        category: "",
+        basePrice: "",
+        status: "available",
+        variantGroups: [],
+      });
+      if (imagePreview) URL.revokeObjectURL(imagePreview);
+      setImagePreview(null);
+      setImageFile(null);
+      setShowMenuModal(false);
+    } catch (error) {
+      toast.error(error?.data?.message || "Failed to add menu item");
+      console.log(error);
     }
-
-    toast.success("Menu added successfully");
-
-    setMenuItems({
-      name: "",
-      description: "",
-      category: "",
-      basePrice: "",
-      status: "available",
-      variantGroups: [],
-    });
-    if (imagePreview) URL.revokeObjectURL(imagePreview);
-    setImagePreview(null);
-    setImageFile(null);
-    setShowMenuModal(false);
   };
+
   return (
     <>
       <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-50 bg-black/40 p-4">
@@ -285,7 +298,7 @@ const MenuModal = ({ setShowMenuModal, categories }) => {
               <ImageUploader
                 imageRef={imageRef}
                 imagePreview={imagePreview}
-                handleImageChange={handleChange}
+                handleImageChange={handleImageChange}
                 removeImage={removeImage}
               />
             </div>
