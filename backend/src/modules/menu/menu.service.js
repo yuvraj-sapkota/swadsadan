@@ -2,7 +2,7 @@
 import Menu from "./menu.model.js";
 import cloudinary from "../../config/cloudinary.js";
 
-export const createMenu = async ({ body, file }) => {
+export const createMenu = async ({id, body, file }) => {
   // body.variantGroups expected as array or JSON string
   let variantGroups = [];
   if (body.variantGroups) {
@@ -24,6 +24,7 @@ export const createMenu = async ({ body, file }) => {
     }));
 
   const menuData = {
+    hotel:id,
     name: body.name,
     description: body.description || "",
     category: body.category,
@@ -112,6 +113,6 @@ export const deleteMenu = async (id) => {
     }
   }
 
-  await menu.remove();
+  await menu.deleteOne();
   return { deletedId: id };
 };

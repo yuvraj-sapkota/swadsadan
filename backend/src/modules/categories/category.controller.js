@@ -3,6 +3,7 @@ import * as categoryService from "./category.service.js";
 export const create = async (req, res, next) => { 
   try {
     const category = await categoryService.createCategory(
+      req.user._id,
       req.body,
       req.file
     );
