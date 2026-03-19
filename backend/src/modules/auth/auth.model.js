@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs";
 const authSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
-    address: { type: String, required: true },
+    address: { type: String },
     gender: { type: String, enum: ["male", "female", "other"] },
     phone: { type: String },
     role: {
