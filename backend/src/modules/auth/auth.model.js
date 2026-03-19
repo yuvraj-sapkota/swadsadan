@@ -5,8 +5,8 @@ const authSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },
     address: { type: String, required: true },
-    gender: { type: String, enum: ["male", "female", "other"], required: true },
-    phone: { type: String, required: true },
+    gender: { type: String, enum: ["male", "female", "other"] },
+    phone: { type: String },
     role: {
       type: String,
       enum: ["user", "admin","resturentOwner"],
