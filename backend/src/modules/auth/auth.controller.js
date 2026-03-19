@@ -1,4 +1,4 @@
-import { registerUser, loginUser } from "./auth.service.js";
+import { registerUser, loginUser, googleLoginUser } from "./auth.service.js";
 import { registerSchema, loginSchema } from "./auth.validation.js";
 
 export const register = async (req, res, next) => {
@@ -45,6 +45,33 @@ export const login = async (req, res, next) => {
     return res.status(200).json({
       success: true,
       message: "Login successful",
+      token: data.token,
+      user: data.user,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+
+
+
+export const googleLogin = async (req, res, next) => {
+  try {
+    const { idToken } = req.body;
+
+    if (!idToken) {
+      return res.status(400).json({
+        success: false,
+        message: "Google token is required",
+      });
+    }
+
+    const data = await googleLoginUser(idToken);
+
+    res.status(200).json({
+      success: true,
+      message: "Google login successful",
       token: data.token,
       user: data.user,
     });
