@@ -70,6 +70,7 @@ const Menu = () => {
       const res = await getMenu({ page, limit, search, category });
 
       const data = res.data;
+
       if (data.success) {
         setMenus((prev) => (append ? [...prev, ...data.items] : data.items));
 
@@ -100,7 +101,7 @@ const Menu = () => {
   } = {}) => {
     try {
       const data = await getCategories({ page, limit, search });
-      console.log(data);
+
       if (data.success) {
         setCategories((prev) =>
           append ? [...prev, ...data.items] : data.items,
@@ -148,7 +149,7 @@ const Menu = () => {
       setDeleteLoading(true);
       if (deleteType === "category") {
         const res = await deleteOne(deleteId);
-        console.log(res);
+
         if (res.data.success) {
           toast.success(res.data.message);
           fetchCategories();
@@ -157,7 +158,7 @@ const Menu = () => {
 
       if (deleteType === "menu") {
         const data = await deleteMenu(deleteId);
-        console.log(data);
+
         if (data.success) {
           toast.success(data.message);
           fetchMenus({ page: 1 });
@@ -332,7 +333,11 @@ const Menu = () => {
                 onEdit={handleMenuEditClick}
               />
             ) : (
-              <MenuGrid menus={menus} onDelete={handleDeleteClick} />
+              <MenuGrid
+                menus={menus}
+                onDelete={handleDeleteClick}
+                onEdit={handleMenuEditClick}
+              />
             )}
           </>
         )}

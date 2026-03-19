@@ -40,7 +40,8 @@ const filteredMenus = [
   },
 ];
 
-const MenuGrid = ({ menus, onDelete }) => {
+const MenuGrid = ({ menus, onDelete, onEdit }) => {
+
   return (
     <>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -108,7 +109,10 @@ const MenuGrid = ({ menus, onDelete }) => {
               )}
 
               <div className="flex justify-between items-center pt-3 border-t">
-                <button className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-black">
+                <button
+                  onClick={() => onEdit(menu)}
+                  className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-black"
+                >
                   <Pencil size={18} />
                   Edit
                 </button>
