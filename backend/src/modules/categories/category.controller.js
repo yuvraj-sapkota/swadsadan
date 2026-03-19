@@ -1,7 +1,7 @@
 import * as categoryService from "./category.service.js";
 import Resturent from "../restaurant/restaurant.model.js";
 
-export const create = async (req, res, next) => { 
+export const create = async (req, res, next) => {
   try {
 
         const restaurant = await Resturent.findOne({
@@ -37,14 +37,14 @@ export const getAll = async (req, res, next) => {
       search,
     });
 
-     if (limit > 100) {
+    if (limit > 100) {
       const error = new Error("Limit cannot be greater than 100");
       error.statusCode = 400;
       return next(error);
     }
 
     res.json({
-        success: true,
+      success: true,
       message: "Category get successfully",
       ...result,
     });
@@ -58,9 +58,9 @@ export const getOne = async (req, res, next) => {
     const category = await categoryService.getCategoryById(req.params.id);
 
     res.json({
-  success: true,
-      message: "euta category aayo",   
-         data: category,
+      success: true,
+      message: "euta category aayo",
+      data: category,
     });
   } catch (error) {
     next(error);
@@ -72,7 +72,7 @@ export const update = async (req, res, next) => {
     const category = await categoryService.updateCategory(
       req.params.id,
       req.body,
-      req.file
+      req.file,
     );
 
     res.json({

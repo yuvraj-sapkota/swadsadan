@@ -10,7 +10,7 @@ import CategoryTable from "./category/CategoryTable";
 import CategoryGrid from "./category/CategoryGrid";
 import MenuTable from "./menuParts/MenuTable";
 import MenuGrid from "./menuParts/MenuGrid";
-import { getMenu } from "../../../services/menu/menuApi";
+import { deleteMenu, getMenu } from "../../../services/menu/menuApi";
 import {
   deleteOne,
   getCategories,
@@ -18,22 +18,37 @@ import {
 import ConfirmDeleteModel from "../../../components/ConfirmDeleteModel";
 import { toast } from "sonner";
 const Menu = () => {
+  // view states
   const [viewMode, setViewMode] = useState("grid");
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get("tab") || "categories";
+
+  //modal states
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [showMenuModal, setShowMenuModal] = useState(false);
+
+  // delete states
   const [deleteId, setDeleteId] = useState(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
-  const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [hasMore, setHasMore] = useState(true);
-  const [search, setSearch] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
-  const [page, setpage] = useState(1);
-  const limit = 20;
+  const [deleteType, setDeleteType] = useState(null);
 
+  // menu state
   const [menus, setMenus] = useState([]);
+  const [menuPage, setMenuPage] = useState(1);
+  const limit = 20;
+  const [menuSearch, setMenuSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [hasMore, setHasMore] = useState(true);
+
+  // category state
+  const [categories, setCategories] = useState([]);
+  const [categoryPage, setCategoryPage] = useState(1);
+  const [categorySearch, setCategorySearch] = useState("");
+  const [categoryHasMore, setCategoryHasMore] = useState(true);
+
+  // edit menu and category
+  const [selectedMenu, setSelectedMenu] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const calculateMenuPrice = (menu) => {
     let extra = 0;
@@ -53,7 +68,9 @@ const Menu = () => {
   } = {}) => {
     try {
       const res = await getMenu({ page, limit, search, category });
+
       const data = res.data;
+
       if (data.success) {
         setMenus((prev) => (append ? [...prev, ...data.items] : data.items));
 
@@ -67,26 +84,50 @@ const Menu = () => {
   // search
   useEffect(() => {
     const delay = setTimeout(() => {
-      setpage(1);
+      setMenuPage(1);
       fetchMenus({
         page: 1,
-        search,
+        menuSearch,
         category: categoryFilter,
       });
     }, 400);
     return () => clearTimeout(delay);
-  }, [search]);
+  }, [menuSearch]);
 
-  const fetchCategories = async () => {
+  const fetchCategories = async ({
+    page = 1,
+    search = "",
+    append = false,
+  } = {}) => {
     try {
-      const res = await getCategories();
-      console.log(res);
-      setCategories(res.data.items);
+      const data = await getCategories({ page, limit, search });
+
+      if (data.success) {
+        setCategories((prev) =>
+          append ? [...prev, ...data.items] : data.items,
+        );
+        setCategoryHasMore(data.items.length === limit);
+      }
     } catch (error) {
-      console.log("Category fetch error", error);
+      toast.error(
+        error?.message || "frontend message: Failed to fetch categories",
+      );
     }
   };
-  // console.log(categories);
+
+  // category search debounce
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      setCategoryPage(1);
+      fetchCategories({ page: 1, search: categorySearch, append: false });
+    }, 400);
+    return () => clearTimeout(delay);
+  }, [categorySearch]);
+
+  const handleMenuEditClick = (menu) => {
+    setShowMenuModal(true);
+    setSelectedMenu(menu);
+  };
 
   const handleEditClick = (category) => {
     setShowCategoryModal(true);
@@ -98,23 +139,37 @@ const Menu = () => {
     setShowCategoryModal(false);
   };
 
-  const handleDeleteClick = async (id) => {
+  const handleDeleteClick = async (id, type) => {
     setDeleteId(id);
+    setDeleteType(type);
   };
 
-  const confirmDeleteCategory = async () => {
+  const confirmDelete = async () => {
     try {
       setDeleteLoading(true);
-      const res = await deleteOne(deleteId);
-      console.log(res);
-      if (res.data.success) {
-        toast.success(res.data.message);
+      if (deleteType === "category") {
+        const res = await deleteOne(deleteId);
+
+        if (res.data.success) {
+          toast.success(res.data.message);
+          fetchCategories();
+        }
       }
-      fetchCategories();
+
+      if (deleteType === "menu") {
+        const data = await deleteMenu(deleteId);
+
+        if (data.success) {
+          toast.success(data.message);
+          fetchMenus({ page: 1 });
+        }
+      }
+
       setDeleteId(null);
+      setDeleteType(null);
     } catch (error) {
       console.log(error);
-      toast.error("Failed to delete category");
+      toast.error(error.message || "Failed to delete category");
     } finally {
       setDeleteLoading(false);
     }
@@ -124,9 +179,31 @@ const Menu = () => {
     setDeleteId(null);
   };
 
+  //load more categories
+  const loadMoreCategories = () => {
+    if (!categoryHasMore) return;
+
+    const nextPage = categoryPage + 1;
+    setCategoryPage(nextPage);
+    fetchCategories({ page: nextPage, search: categorySearch, append: true });
+  };
+  //load more menus
+  const loadMoreMenus = () => {
+    if (!hasMore) return;
+
+    const nextPage = menuPage + 1;
+    setMenuPage(nextPage);
+    fetchMenus({
+      page: nextPage,
+      search: menuSearch,
+      category: categoryFilter,
+      append: true,
+    });
+  };
+
   useEffect(() => {
     fetchMenus({ page: 1 });
-    fetchCategories();
+    fetchCategories({ page: 1, search: categorySearch });
   }, []);
   return (
     <>
@@ -147,8 +224,12 @@ const Menu = () => {
             <div className="flex items-center gap-2 border border-gray-200 px-3 py-2 rounded-md bg-gray-50 w-full md:w-[260px]">
               <Search size={18} className="text-gray-500" />
               <input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
+                value={activeTab === "categories" ? categorySearch : menuSearch}
+                onChange={(e) =>
+                  activeTab === "categories"
+                    ? setCategorySearch(e.target.value)
+                    : setMenuSearch(e.target.value)
+                }
                 className="border-none bg-transparent outline-none w-full text-sm text-gray-700 placeholder:text-gray-400"
                 type="text"
                 placeholder={
@@ -166,8 +247,8 @@ const Menu = () => {
                 onChange={(e) => {
                   const value = e.target.value;
                   setCategoryFilter(value);
-                  setpage(1);
-                  fetchMenus({ page: 1, search, category: value });
+                  setMenuPage(1);
+                  fetchMenus({ page: 1, menuSearch, category: value });
                 }}
                 className="border border-gray-200 px-3 py-2 text-sm w-full md:w-[220px] rounded-md bg-white outline-none"
               >
@@ -245,7 +326,19 @@ const Menu = () => {
           </>
         ) : (
           <>
-            {viewMode === "table" ? <MenuTable /> : <MenuGrid menus={menus} />}
+            {viewMode === "table" ? (
+              <MenuTable
+                menus={menus}
+                onDelete={handleDeleteClick}
+                onEdit={handleMenuEditClick}
+              />
+            ) : (
+              <MenuGrid
+                menus={menus}
+                onDelete={handleDeleteClick}
+                onEdit={handleMenuEditClick}
+              />
+            )}
           </>
         )}
       </div>
@@ -263,12 +356,14 @@ const Menu = () => {
         <MenuModal
           setShowMenuModal={setShowMenuModal}
           categories={categories}
+          fetchMenus={fetchMenus}
+          selectedMenu={selectedMenu}
         />
       )}
 
       {deleteId && (
         <ConfirmDeleteModel
-          onConfirm={confirmDeleteCategory}
+          onConfirm={confirmDelete}
           onCancel={cancleDeleteCategory}
           loading={deleteLoading}
         />

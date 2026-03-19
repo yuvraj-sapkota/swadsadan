@@ -49,7 +49,7 @@ const CategoryTable = ({ categories, onDelete, onEdit }) => {
                     </button>
 
                     <button
-                      onClick={() => onDelete(category._id)}
+                      onClick={() => onDelete(category._id, "category")}
                       className="p-2 rounded-md border border-gray-200 hover:bg-red-50"
                     >
                       <Trash2 size={18} className="text-red-600" />
