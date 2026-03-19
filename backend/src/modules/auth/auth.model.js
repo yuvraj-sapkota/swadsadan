@@ -9,7 +9,7 @@ const authSchema = new mongoose.Schema(
     phone: { type: String },
     role: {
       type: String,
-      enum: ["user", "admin","resturentOwner"],
+      enum: ["user", "admin", "resturentOwner"],
       default: "user",
     },
     email: {
@@ -19,14 +19,14 @@ const authSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
-    password: { 
+    password: {
       type: String,
       required: true,
       minlength: 6,
       select: false,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 authSchema.pre("save", async function () {
