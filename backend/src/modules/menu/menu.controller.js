@@ -3,13 +3,14 @@ import * as menuService from "./menu.service.js";
 import Resturent from "../restaurant/restaurant.model.js";
 
 export const createMenu = async (req, res) => {
+  console.log(req.user)
   try {
 
     const restaurant = await Resturent.findOne({
   owner: req.user._id
 });
 if(!restaurant) return res.status(404).json({ success: false, message: " resturent Not found" });
-const ownerid = restaurant._id;
+const ownerid = restaurant._id; 
 console.log("resid",ownerid);
 
     const created = await menuService.createMenu({ id: ownerid, body: req.body, file: req.file });

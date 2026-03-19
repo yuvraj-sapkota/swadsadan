@@ -3,6 +3,7 @@ import Menu from "./menu.model.js";
 import cloudinary from "../../config/cloudinary.js";
 
 export const createMenu = async ({id, body, file }) => {
+
   // body.variantGroups expected as array or JSON string
   let variantGroups = [];
   if (body.variantGroups) {
@@ -12,7 +13,7 @@ export const createMenu = async ({id, body, file }) => {
   }
 
   // sanitize/convert prices
-  const normalize = (groups) =>
+  const normalize = (groups) => 
     groups.map((g) => ({
       groupName: g.groupName,
       required: !!g.required,
@@ -51,7 +52,7 @@ export const getMenus = async ({ page = 1, limit = 20, category, search }) => {
 
   const skip = (page - 1) * limit;
   const [items, total] = await Promise.all([
-    Menu.find(q).sort({ createdAt: -1 }).skip(skip).limit(Number(limit)),
+    Menu.find(q).sort({ createdAt: -1 }).skip(skip).limit(Number(limit)).populate("category", "name"),,
     Menu.countDocuments(q),
   ]);
   return { items, total, page: Number(page), limit: Number(limit) };

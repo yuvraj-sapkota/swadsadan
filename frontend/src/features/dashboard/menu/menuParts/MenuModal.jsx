@@ -1,5 +1,5 @@
 import { Plus, Trash, X } from "lucide-react";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import imageCompression from "browser-image-compression";
 import MenuBasicInfo from "./MenuBasicInfo";
@@ -13,19 +13,24 @@ const MenuModal = ({
   fetchMenus,
   selectedMenu,
 }) => {
-  console.log("edit garna select gareko menu", selectedMenu);
+  const [menuItems, setMenuItems] = useState({
+    name: selectedMenu?.name || "",
+    description: selectedMenu?.description || "",
+    category: selectedMenu?.category || "",
+    basePrice: selectedMenu?.basePrice || "",
+    status: selectedMenu?.status || "available",
+    variantGroups: selectedMenu?.variantGroups || [],
+  });
+
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const imageRef = useRef();
 
-  const [menuItems, setMenuItems] = useState({
-    name: "",
-    description: "",
-    category: "",
-    basePrice: "",
-    status: "available",
-    variantGroups: [],
-  });
+  // useEffect(()=>{
+  //   if(selectedMenu){
+  //     setImagePreview(selectedMenu.image)
+  //   }
+  // },[selectedMenu])
 
   // variants function starts
   const addVariantGroup = () => {
@@ -220,7 +225,7 @@ const MenuModal = ({
       formData.append("variantGroups", JSON.stringify(menuItems.variantGroups));
 
       const data = await addMenu(formData);
-      console.log(data);
+
       if (data.success) {
         toast.success(data.message || "Menu added successfully");
       }

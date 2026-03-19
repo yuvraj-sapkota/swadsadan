@@ -1,3 +1,4 @@
+import { Trash } from "lucide-react";
 import React from "react";
 
 const ImageUploader = ({

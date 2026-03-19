@@ -15,9 +15,9 @@ const MenuTable = ({ menus, onDelete, onEdit }) => {
               <th className="text-left px-4 py-2 whitespace-nowrap">
                 Descripton
               </th>
-              <th className="text-left px-4 py-2 whitespace-nowrap">
+              {/* <th className="text-left px-4 py-2 whitespace-nowrap">
                 Category
-              </th>
+              </th> */}
               <th className="text-left px-4 py-2 whitespace-nowrap">Status</th>
               <th className="text-right px-4 py-2 whitespace-nowrap">Price</th>
               <th className="text-right px-4 py-2 whitespace-nowrap">Action</th>
@@ -36,7 +36,7 @@ const MenuTable = ({ menus, onDelete, onEdit }) => {
                 </td>
                 <td className="px-4 py-2 text-gray-500">{menu.name}</td>
                 <td className="px-4 py-2 text-gray-500">{menu.description}</td>
-                <td className="px-4 py-2 text-gray-500">{menu.category}</td>
+                {/* <td className="px-4 py-2 text-gray-500">{menu.category.name}</td> */}
                 <td className="px-4 py-2 text-gray-500">{menu.status}</td>
                 <td className="px-4 py-2 text-gray-500 text-right">
                   {menu.basePrice}

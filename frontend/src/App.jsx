@@ -1,4 +1,3 @@
-
 import Admin from "./features/dashboard/admin/Admin";
 import Menu from "./features/dashboard/menu/Menu";
 import Reservation from "./features/dashboard/reservation/Reservation";
@@ -9,14 +8,21 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
 import RestaurantPage from "./pages/RestaurantPage";
 import Cart from "./pages/Cart";
+import LandingPage from "./pages/LandingPage";
+import LoginPage from "./features/auth/pages/LoginPage";
+import RegisterPage from "./features/auth/pages/RegisterPage";
 const App = () => {
   return (
     <>
       <Toaster position="top-right" richColors />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<RestaurantPage />} />
+          <Route path="/restaurant" element={<RestaurantPage />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+
           <Route path="/dashboard/" element={<Dashboard />}>
             <Route index element={<Admin />} />
             <Route path="menu" element={<Menu />} />
