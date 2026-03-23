@@ -1,8 +1,22 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://192.168.1.4:8000/api",
-  timeout: 5000,
+  // baseURL: "http://localhost:8000/api",
+  baseURL: "http://192.168.1.15:8000/api",
+  timeout: 10000,
 });
+
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
+);
 
 export default apiClient;
