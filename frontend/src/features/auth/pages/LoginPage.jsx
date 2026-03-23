@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 
-import { Lock, Mail } from "lucide-react";
+import { Loader, Lock, Mail } from "lucide-react";
 import Navbar from "../../../components/navbar/Navbar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../../../services/auth/authApi";
+import { toast } from "sonner";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -19,12 +22,21 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
+      setLoading(true);
       const res = await loginUser(formData);
-      console.log(res);
+      if (res.success) {
+        localStorage.setItem("token", res.token);
+        localStorage.setItem("user", JSON.stringify(res.user));
+        toast.success(res.message);
+
+        navigate("/partners");
+      }
     } catch (error) {
       console.log(error);
-      console.log(error.response.data.message);
-      toast.error(error.response.data.message);
+      console.log(error.response.data.message || "Something went wrong");
+      toast.error(error.response.data.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -40,7 +52,7 @@ const LoginPage = () => {
                   Welcome back
                 </h2>
                 <p className="text-sm text-gray-400">
-                  Sign in to your restaurant dashboard
+                  Access your account and continue your journey
                 </p>
               </div>
 
@@ -55,6 +67,7 @@ const LoginPage = () => {
                     />
                     <input
                       name="email"
+                      required
                       value={formData.email}
                       onChange={handleChange}
                       type="email"
@@ -73,6 +86,7 @@ const LoginPage = () => {
                     />
                     <input
                       name="password"
+                      required
                       value={formData.password}
                       onChange={handleChange}
                       type="password"
@@ -90,8 +104,16 @@ const LoginPage = () => {
                     </button>
                   </div>
 
-                  <button className="bg-orange-500 hover:bg-orange-500 font-semibold rounded-md transition-colors mt-2 text-white w-full  py-3  text">
-                    Sign in
+                  <button
+                    disabled={loading}
+                    className={`${
+                      loading ? "bg-orange-400" : "bg-orange-500"
+                    }  hover:bg-orange-600 font-semibold rounded-md transition-colors mt-2 text-white w-full  py-3  text cursor-pointer flex items-center justify-center gap-1`}
+                  >
+                    {loading && (
+                      <Loader className="animate-spin h-5 w-5 mr-2" />
+                    )}
+                    {loading ? "signing in..." : "Sign in"}
                   </button>
                 </div>
               </form>

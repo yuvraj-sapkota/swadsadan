@@ -1,5 +1,6 @@
 import { ArrowRight, TrendingUp } from "lucide-react";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Banner = () => {
   return (
@@ -12,10 +13,10 @@ const Banner = () => {
             Register your restaurant in under 5 minutes and start accepting
             digital orders today.
           </p>
-          <button className="inline-flex items-center gap-2 px-6 py-3 bg-white text-amber-700 text-sm font-semibold rounded-xl hover:bg-amber-50 transition-colors">
+          <Link to="/register" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-amber-700 text-sm font-semibold rounded-xl hover:bg-amber-50 transition-colors">
             Register your restaurant
             <ArrowRight size={16} />
-          </button>
+          </Link>
         </div>
       </div>
     </>

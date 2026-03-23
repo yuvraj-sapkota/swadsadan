@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Navbar from "../../../components/navbar/Navbar";
-import { Lock, Mail, User } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Loader, Lock, Mail, User } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import axios from "axios";
 import { registerUser } from "../../../services/auth/authApi";
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -27,12 +28,20 @@ const RegisterPage = () => {
     }
 
     try {
+      setLoading(true);
       const res = await registerUser(formData);
-      console.log(res);
+      if (res.success) {
+        localStorage.setItem("token", res.token);
+        localStorage.setItem("user", JSON.stringify(res.user));
+        toast.success(res.message);
+
+        navigate("/login");
+      }
     } catch (error) {
       console.log(error);
-      console.log(error.response.data.message);
-      toast.error(error.response.data.message);
+      toast.error(error.response.data.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
   return (
@@ -59,7 +68,7 @@ const RegisterPage = () => {
                 {/* full name  */}
                 <div className="flex flex-col gap-2">
                   <label className="text-gray-600  font-medium">
-                    Full name{" "}
+                    Full name
                   </label>
                   <div className="relative">
                     <User
@@ -70,6 +79,7 @@ const RegisterPage = () => {
                     <input
                       onChange={handleChange}
                       name="name"
+                      required
                       value={formData.name}
                       type="text"
                       placeholder="Ram prasad"
@@ -89,6 +99,7 @@ const RegisterPage = () => {
                       onChange={handleChange}
                       value={formData.email}
                       name="email"
+                      required
                       type="text"
                       placeholder="restaurant@example.com"
                       className="border border-gray-200 rounded-md py-3 px-9 w-full bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-amber-500 transition"
@@ -107,6 +118,7 @@ const RegisterPage = () => {
                       onChange={handleChange}
                       value={formData.password}
                       name="password"
+                      required
                       type="password"
                       placeholder="Min. 8 characters"
                       className="border border-gray-200 rounded-md py-3 px-9 w-full bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-amber-500 transition"
@@ -127,6 +139,7 @@ const RegisterPage = () => {
                       onChange={handleChange}
                       value={formData.confirmPassword}
                       name="confirmPassword"
+                      required
                       type="password"
                       placeholder="Min. 8 characters"
                       className="border border-gray-200 rounded-md py-3 px-9 w-full bg-gray-50 text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-amber-500 transition"
@@ -184,9 +197,12 @@ const RegisterPage = () => {
 
                 <button
                   type="submit"
-                  className="bg-orange-500 hover:bg-orange-500 font-semibold rounded-md transition-colors mt-2 text-white w-full  py-3  text"
+                  className={`${
+                    loading ? "bg-orange-400" : "bg-orange-500"
+                  }  hover:bg-orange-600 font-semibold rounded-md transition-colors mt-2 text-white w-full  py-3  text cursor-pointer flex items-center justify-center gap-1`}
                 >
-                  Create account
+                  {loading && <Loader className="animate-spin h-5 w-5 mr-2" />}
+                  {loading ? "Creating..." : "Create Account"}
                 </button>
               </form>
 
