@@ -1,5 +1,6 @@
 import * as categoryService from "./category.service.js";
 import Resturent from "../restaurant/restaurant.model.js";
+import { createCategorySchema } from "./category.validation.js";
 
 export const create = async (req, res, next) => {
   try {
@@ -10,6 +11,9 @@ export const create = async (req, res, next) => {
     if(!restaurant) return res.status(404).json({ success: false, message: " resturent Not found" });
     const ownerid = restaurant._id;
     console.log("resid",ownerid);
+
+    // const { error } = createCategorySchema.validate(req.body);
+    // if (error) return res.status(400).json({ success: false, message: error.message });
 
     const category = await categoryService.createCategory(
       ownerid,

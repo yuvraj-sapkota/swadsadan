@@ -5,10 +5,17 @@ import {
   updateRestaurant,
   deleteRestaurant
 } from "./restaurant.service.js";
+import { createRestaurantSchema } from "./restaurant.validation.js";
+
 
 
 export const create = async (req, res, next) => {
   try {
+  // const { error } = createRestaurantSchema.validate(req.body);
+  //   if (error) return res.status(400).json({ success: false, message: error.message });
+
+  // console.log("aako -",req.body);
+
     const restaurant = await createRestaurant(req.user._id, req.body);
 
     res.status(201).json({
