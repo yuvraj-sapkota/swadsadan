@@ -4,8 +4,10 @@ import { Loader, Lock, Mail, User } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { registerUser } from "../../../services/auth/authApi";
+import { useAuthStore } from "../../../store/auth/useAuthStore";
 
 const RegisterPage = () => {
+  const { register } = useAuthStore();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -28,13 +30,9 @@ const RegisterPage = () => {
     }
 
     try {
-      setLoading(true);
-      const res = await registerUser(formData);
+      const res = await register(formData);
       if (res.success) {
-        localStorage.setItem("token", res.token);
-        localStorage.setItem("user", JSON.stringify(res.user));
         toast.success(res.message);
-
         navigate("/login");
       }
     } catch (error) {
