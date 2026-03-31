@@ -3,12 +3,13 @@ import React, { useState } from "react";
 import { Loader, Lock, Mail } from "lucide-react";
 import Navbar from "../../../components/navbar/Navbar";
 import { Link, useNavigate } from "react-router-dom";
-import { loginUser } from "../../../services/auth/authApi";
 import { toast } from "sonner";
+import { useAuthStore } from "../../../store/auth/useAuthStore";
 
 const LoginPage = () => {
+  const { loading, login } = useAuthStore();
+  // console.log(error);
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -22,21 +23,22 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      setLoading(true);
-      const res = await loginUser(formData);
+      const res = await login(formData);
+      console.log(res);
       if (res.success) {
-        localStorage.setItem("token", res.token);
-        localStorage.setItem("user", JSON.stringify(res.user));
         toast.success(res.message);
 
-        navigate("/partners");
+        if (!res.user.hasRestaurant) {
+          //login modal ma auta hasRestaurant vanni filed add gar suru ma value null rakh, but jaba user le restaurant register garxa taba value restaurant ko id gardinu,
+          navigate("/partners");
+        } else {
+          navigate("/dashboard");
+        }
       }
-    } catch (error) {
-      console.log(error);
-      console.log(error.response.data.message || "Something went wrong");
-      toast.error(error.response.data.message || "Something went wrong");
-    } finally {
-      setLoading(false);
+    } catch (err) {
+      console.log("zustand le pathako error", err);
+
+      toast.error(err || "Something went wrong");
     }
   };
   return (
