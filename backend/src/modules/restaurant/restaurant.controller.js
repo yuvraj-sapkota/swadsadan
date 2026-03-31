@@ -14,7 +14,7 @@ export const create = async (req, res, next) => {
   // const { error } = createRestaurantSchema.validate(req.body);
   //   if (error) return res.status(400).json({ success: false, message: error.message });
 
-  // console.log("aako -",req.body);
+  console.log("aako -",req.body);
 
     const restaurant = await createRestaurant(req.user._id, req.body);
 
