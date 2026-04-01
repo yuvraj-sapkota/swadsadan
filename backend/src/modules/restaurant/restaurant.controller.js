@@ -16,7 +16,7 @@ export const create = async (req, res, next) => {
 
 
 
-    const restaurant = await createRestaurant(req.user._id, req.body);
+    const restaurant = await createRestaurant(req.user._id, req.body, req.file);
 
     res.status(201).json({
       success: true,
@@ -70,7 +70,8 @@ export const update = async (req, res, next) => {
     const restaurant = await updateRestaurant(
       req.params.id,
       req.user._id,
-      req.body
+      req.body,
+      req.file
     );
 
     res.json({

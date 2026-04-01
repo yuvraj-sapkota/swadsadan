@@ -1,7 +1,7 @@
 import Restaurant from "./restaurant.model.js";
 import User from "../auth/auth.model.js";
 
-export const createRestaurant = async (userId, data) => {
+export const createRestaurant = async (userId, data , file) => {
   
 
   const existing = await Restaurant.findOne({ owner: userId });
@@ -12,18 +12,24 @@ export const createRestaurant = async (userId, data) => {
 
   const restaurant = await Restaurant.create({
     owner: userId,
-    ...data
+    ...data,
+    image: file?.path,              
+    imagePublicId: file?.filename,  
   });
 
+ 
+
   await User.findByIdAndUpdate(userId, {
-    role: "resturentOwner"
+    role: "resturentOwner",
+    hasRestaurant: restaurant._id
+
   });
 
   return restaurant;
 };
 
 
-export const getAllRestaurants = async () => {
+ export const getAllRestaurants = async () => {
   return await Restaurant.find().populate("owner", "name email");
 };
 
@@ -33,7 +39,7 @@ export const getRestaurantById = async (id) => {
 };
 
 
-export const updateRestaurant = async (id, userId, data) => {
+export const updateRestaurant = async (id, userId, data, file) => {
 
   const restaurant = await Restaurant.findById(id);
 
@@ -45,7 +51,23 @@ export const updateRestaurant = async (id, userId, data) => {
     throw new Error("Not authorized");
   }
 
-  return await Restaurant.findByIdAndUpdate(id, data, { new: true });
+  if (file) {
+    if (restaurant.imagePublicId) {
+      await cloudinary.uploader.destroy(restaurant.imagePublicId);
+    }
+
+    restaurant.image = file.path;
+    restaurant.imagePublicId = file.filename;
+  }
+
+  restaurant.name = data.name || restaurant.name;
+  restaurant.address = data.address || restaurant.address;
+  restaurant.contact = data.contact || restaurant.contact;
+  restaurant.description = data.description || restaurant.description;
+
+  await restaurant.save();
+
+  return restaurant;
 };
 
 

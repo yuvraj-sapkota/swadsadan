@@ -38,6 +38,10 @@ const authSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    hasRestaurant: {
+      type: String,
+      default: null,
+    },
   },
   { timestamps: true },
 );
