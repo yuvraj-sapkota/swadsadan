@@ -4,6 +4,7 @@ import categoryRoutes from "./modules/categories/category.routes.js";
 import menuRoutes from "./modules/menu/menu.routes.js";
 import authRoutes from "./modules/auth/auth.routes.js";
 import restaurantRoutes from "./modules/restaurant/restaurant.routes.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 
 
@@ -18,9 +19,6 @@ app.get("/", (req, res) => {
   res.json({ message: "Api running" });
 });
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-import { errorHandler } from "./middlewares/errorHandler.js";
 
 
 // Routes
