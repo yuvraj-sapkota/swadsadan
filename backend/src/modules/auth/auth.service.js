@@ -5,7 +5,7 @@ import { OAuth2Client } from "google-auth-library";
 
 export const registerUser = async (data) => {
   const userExists = await User.findOne({
-    $or: [{ email: data.email }, { phone: data.phone }],
+    $or: [{ email: data.email }],
   });
 
   if (userExists) {
