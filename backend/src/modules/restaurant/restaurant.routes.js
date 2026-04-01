@@ -16,7 +16,7 @@ const router = express.Router();
 router.post("/", protect, upload.single("image"), create);  //http://localhost:6000/api/restaurants
 router.get("/", getAll);
 router.get("/:id", getOne);
-router.put("/:id", update);
+router.put("/:id" , protect, upload.single("image"), update);
 router.delete("/:id", remove);
 
 export default router;
