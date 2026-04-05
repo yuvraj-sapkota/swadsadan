@@ -4,6 +4,7 @@ import categoryRoutes from "./modules/categories/category.routes.js";
 import menuRoutes from "./modules/menu/menu.routes.js";
 import authRoutes from "./modules/auth/auth.routes.js";
 import restaurantRoutes from "./modules/restaurant/restaurant.routes.js";
+import orderRoutes from "./modules/order/order.routes.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 
 
@@ -26,6 +27,7 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/menus", menuRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/restaurants", restaurantRoutes);
+app.use("/api/orders", orderRoutes);
 
 
 app.use(errorHandler);  
