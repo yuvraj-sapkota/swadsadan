@@ -1,7 +1,6 @@
 import Cart from "./cart.model.js";
 import Menu from "../menu/menu.model.js";
 
-// add item
 export const addToCart = async (userId, data) => {
   const menu = await Menu.findById(data.menu);
 
@@ -9,7 +8,6 @@ export const addToCart = async (userId, data) => {
 
   let cart = await Cart.findOne({ user: userId });
 
-  // create cart
   if (!cart) {
     cart = await Cart.create({
       user: userId,
@@ -19,12 +17,10 @@ export const addToCart = async (userId, data) => {
     });
   }
 
-  // prevent multi restaurant
   if (cart.restaurant.toString() !== menu.hotel.toString()) {
     throw new Error("Only one restaurant allowed per cart");
   }
 
-  // check same item → update quantity
   const existingItem = cart.items.find(
     (i) =>
       i.menu.toString() === data.menu &&
@@ -46,14 +42,13 @@ export const addToCart = async (userId, data) => {
   return cart;
 };
 
-// get cart
 export const getCart = async (userId) => {
   return await Cart.findOne({ user: userId })
     .populate("items.menu")
     .populate("restaurant");
 };
 
-// remove item
+
 export const removeItem = async (userId, itemId) => {
   const cart = await Cart.findOne({ user: userId });
 
@@ -65,7 +60,6 @@ export const removeItem = async (userId, itemId) => {
   return cart;
 };
 
-// clear cart
 export const clearCart = async (userId) => {
   return await Cart.findOneAndDelete({ user: userId });
 };
