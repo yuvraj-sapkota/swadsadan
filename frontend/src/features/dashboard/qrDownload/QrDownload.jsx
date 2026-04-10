@@ -1,9 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const QrDownload = () => {
-  return (
-    <div>QrDownload</div>
-  )
-}
+  return <div>QrDownload</div>;
+};
 
-export default QrDownload
+export default QrDownload;

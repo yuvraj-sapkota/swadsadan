@@ -84,6 +84,7 @@ const RegisterRestaurant = () => {
       data.append("image", imageFile);
 
       const res = await registerRestaurant(data);
+      console.log(res);
       if (res.success) {
         toast.success("Restaurant registered successfully!");
         navigate("/dashboard"); // redirect to restaurant dashboard/page
