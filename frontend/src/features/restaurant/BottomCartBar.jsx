@@ -18,7 +18,7 @@ const BottomCartBar = ({ totalQty }) => {
         </div>
       </div>
     </>
-  );
+  ); 
 };
 
 export default BottomCartBar;

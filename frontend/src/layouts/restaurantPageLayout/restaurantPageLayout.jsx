@@ -198,7 +198,7 @@ const restaurantPageLayout = () => {
   }, [cart]);
 
   // Add to Cart
-  const handleAddToCart = (menu) => {
+  const handleAddToCart = (menu) => { 
     if (!menu || !menu._id) return;
 
     setCart((prev) => {

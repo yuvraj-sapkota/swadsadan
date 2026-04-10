@@ -5,7 +5,7 @@ export const register = async (req, res, next) => {
   try {
     const { error } = registerSchema.validate(req.body);
     console.log(error);
-    
+
     if (error) return res.status(400).json({ message: error.message });
 
     const data = await registerUser(req.body);
@@ -52,9 +52,6 @@ export const login = async (req, res, next) => {
     next(err);
   }
 };
-
-
-
 
 export const googleLogin = async (req, res, next) => {
   try {

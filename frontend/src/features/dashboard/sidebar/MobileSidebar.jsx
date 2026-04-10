@@ -3,13 +3,16 @@ import { NavLink } from "react-router-dom";
 import { User, LogOut, X } from "lucide-react";
 import ConfirmLogout from "./ConfirmLogout";
 import { useState } from "react";
-
+import { useRestaurantStore } from "../../../store/restaurant/restaurantStore";
 const MobileSidebar = ({
   mobileOpen,
   menuItems,
   setMobileOpen,
   setOpenLogout,
 }) => {
+  const { restaurant } = useRestaurantStore();
+  console.log("restaurant real for", restaurant)
+
   return (
     <>
       {/* ================= MOBILE SIDEBAR DRAWER ================= */}
@@ -78,10 +81,10 @@ const MobileSidebar = ({
 
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-gray-800 truncate">
-                  Admin User
+                  {restaurant?.owner.name}
                 </p>
                 <p className="text-xs text-gray-500 truncate">
-                  admin@restaurant.com
+                 {restaurant?.owner.email}
                 </p>
               </div>
             </div>

@@ -5,9 +5,11 @@ import Navbar from "../../../components/navbar/Navbar";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useAuthStore } from "../../../store/auth/useAuthStore";
+import { useRestaurantStore } from "../../../store/restaurant/restaurantStore";
 
 const LoginPage = () => {
   const { loading, login } = useAuthStore();
+  const { loadRestaurant } = useRestaurantStore();
   // console.log(error);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -29,9 +31,9 @@ const LoginPage = () => {
         toast.success(res.message);
 
         if (!res.user.hasRestaurant) {
-          //login modal ma auta hasRestaurant vanni filed add gar suru ma value null rakh, but jaba user le restaurant register garxa taba value restaurant ko id gardinu,
           navigate("/partners");
         } else {
+          await loadRestaurant(res.user?.hasRestaurant);
           navigate("/dashboard");
         }
       }

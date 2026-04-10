@@ -2,9 +2,11 @@ import { useState } from "react";
 import Logo from "../../../components/Logo";
 import { NavLink } from "react-router-dom";
 import { ChevronLeft, ChevronRight, User, LogOut } from "lucide-react";
+import { useRestaurantStore } from "../../../store/restaurant/restaurantStore";
 
 const DesktopSidebar = ({ menuItems, setOpenLogout }) => {
   const [isOpen, setIsOpen] = useState(true);
+  const { restaurant } = useRestaurantStore();
   return (
     <>
       {/* ================= DESKTOP SIDEBAR ================= */}
@@ -73,10 +75,10 @@ const DesktopSidebar = ({ menuItems, setOpenLogout }) => {
             {isOpen && (
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-gray-800 truncate">
-                  Admin User
+                  {restaurant?.owner.name}
                 </p>
                 <p className="text-xs text-gray-500 truncate">
-                  admin@restaurant.com
+                  {restaurant?.owner.email}
                 </p>
               </div>
             )}
