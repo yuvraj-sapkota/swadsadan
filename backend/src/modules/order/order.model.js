@@ -1,36 +1,20 @@
 import mongoose from "mongoose";
 
 const SelectedOptionSchema = new mongoose.Schema({
-  groupName: String,   
-  optionName: String, 
-  price: Number,     
+  groupName: String,
+  optionName: String,
+  price: Number,
 });
 
 const OrderItemSchema = new mongoose.Schema({
-  menu: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Menu",
-    required: true,
-  },
-
-  quantity: {
-    type: Number,
-    required: true,
-    min: 1,
-  },
-
-  selectedOptions: {
-    type: [SelectedOptionSchema],
-    default: [],
-  },
+  menu: { type: mongoose.Schema.Types.ObjectId, ref: "Menu" },
+  quantity: Number,
+  selectedOptions: [SelectedOptionSchema],
 });
 
 const orderSchema = new mongoose.Schema(
   {
-    tableNumber: {
-      type: Number,
-      required: true,
-    },
+    tableNumber: { type: Number, required: true },
 
     user: {
       type: mongoose.Schema.Types.ObjectId,
@@ -38,18 +22,21 @@ const orderSchema = new mongoose.Schema(
       default: null,
     },
 
+    restaurant: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Restaurant",
+      required: true,
+    },
+
     items: [OrderItemSchema],
 
     status: {
       type: String,
-      enum: ["pending", "preparing", "served"],
+      enum: ["pending", "confirmed", "preparing", "served", "cancelled"],
       default: "pending",
     },
 
-    totalAmount: {
-      type: Number,
-      default: 0,
-    },
+    totalAmount: { type: Number, required: true },
   },
   { timestamps: true }
 );
